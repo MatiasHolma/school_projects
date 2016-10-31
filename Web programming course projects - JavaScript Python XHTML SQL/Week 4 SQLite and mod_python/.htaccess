@@ -1,0 +1,15 @@
+AddHandler mod_python .py
+#AddCharset UTF-8 .html
+
+#seuraavien rivien järjestys on olennainen:
+PythonHandler sessions
+PythonHandler autentikointi
+PythonHandler mod_python.publisher
+
+PythonDebug On
+
+PythonInterpPerDirective On
+PythonAutoReload On
+
+#Vaihtaa kansion indeksitiedostoksi index.py
+DirectoryIndex index.py

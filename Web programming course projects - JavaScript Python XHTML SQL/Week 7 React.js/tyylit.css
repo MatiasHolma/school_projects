@@ -1,0 +1,22 @@
+@media screen and (max-width: 512px){
+    #vasen {
+        width: 100%;
+        float: left;
+    }
+
+    #oikea{
+        width: 100%;
+        float: left;
+    }
+}
+
+#vasen {
+    width: 50%;
+    float: left;
+}
+@media screen and (min-width: 512px) {
+    #oikea {
+        width: 50%;
+        float: left;
+    }
+}

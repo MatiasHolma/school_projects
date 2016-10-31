@@ -1,0 +1,63 @@
+from mod_python import apache, Session
+from mod_python import util
+import os
+import os.path
+import hashlib
+
+
+sisalto1 = """<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fi" lang="fi">
+<head>
+<title>Kirjaudu</title>
+</head>
+<body>
+<form action="" method="post">
+<p><label>Tunnus <input type="text" name="tunnus" /></label></p>
+<p><label>Salasana <input type="password" name="salasana" /></label></p>
+<p><input type="submit" value="kirjaudu" /></p>
+"""
+sisalto2 = """
+</form>
+</body>
+</html>
+"""
+
+shared_private_key = "ABCDEF"
+
+def handler(req):
+    #haetaan tiedostojen sisällöt
+    f = open(os.path.join(os.path.dirname(req.filename), 'salasana.txt'), 'r')
+    if os.path.isfile(str(os.path.join(os.path.dirname(req.filename), 'salasana.txt'))) == True:
+        for rivi in f:
+            salis1 = str(rivi)
+        f.close()
+    f.close()
+	
+    f = open(os.path.join(os.path.dirname(req.filename), 'kayttajatunnus.txt'), 'r')
+    if os.path.isfile(str(os.path.join(os.path.dirname(req.filename), 'kayttajatunnus.txt'))) == True:
+        for rivi in f:
+            kayttis1 = rivi
+        f.close()
+    f.close()
+	
+    
+	
+    try:
+        if req.session["kirjautunut"] == "ok":
+            return apache.OK
+    except:
+        form = util.FieldStorage(req)
+        tunnus = form.getfirst("tunnus")#haetaam kentät
+        salasana = form.getfirst("salasana") 
+        if tunnus == kayttis1 and str(salis1) == str(hashlib.sha1(repr(salasana) + "," + shared_private_key).hexdigest()): #verrataan kenttiä salattuihin kenttiin
+            req.session["kirjautunut"] = "ok"
+            req.session.save()
+            req.content_type = "text/html"
+            return apache.OK
+        req.content_type = "text/html"
+
+        req.write ( sisalto1 )
+        req.write( "<p>Et ole kirjautunut</p>" )
+        req.write( sisalto2 )
+        return apache.DONE

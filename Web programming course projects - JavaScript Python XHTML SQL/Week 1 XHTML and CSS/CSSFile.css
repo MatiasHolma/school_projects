@@ -1,0 +1,363 @@
+body {
+	font-family: Arial, Helvetica, sans-serif;	
+}
+
+a {
+	text-decoration:none;
+}
+
+#alaosat {
+	margin-left:3%;
+	margin-right:3%;
+	
+}
+
+#navlist li a
+{
+	color:#FFF;
+	text-decoration:none;
+	font-style:normal;
+}
+
+
+h2 {
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:150%;
+	
+}
+
+
+#navbar
+{
+	background-color:#1E2023;
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:87.5%;
+}
+
+#otsikko
+{
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:187.5%;
+}
+
+.search
+{
+	background-color: #E7E7E7;
+    color: #A5A5A5;
+    height: 28px;
+    padding-left:10px;
+    width: 191px;
+   border-radius: 7px
+}
+
+#vari
+{
+	width:100%;
+	
+}
+
+#tahtitd
+{
+	border-right-style:double;
+	border-width: 4px;
+	border-color:#D6D6D6;	
+	width: 10%;	
+}
+
+#otsikkolista li
+{
+	font-size:187.5%;
+	display: inline;
+	list-style-type: none;
+	padding-right: 0.5%;
+}
+
+
+#otsikkonalalista li
+{
+	display: inline;
+	list-style-type: none;
+	padding-right: 1%;
+}
+
+#ylinkerros
+{
+	border-bottom-style:inset;
+	border-width: 0.1px;
+	border-color:#D6D6D6;	
+}
+
+#ylinkerros table caption
+{
+	text-align:left;	
+}
+
+#vasensisalto
+{
+	float:left;
+	width: 33%;
+
+	
+}
+
+#vasenyla
+{
+	border-width: 0.1px;
+	border-color:#D6D6D6;
+	border-style:inset;
+	border-left:hidden;
+	border-right:hidden;
+}
+
+#vasenala
+{
+}
+
+#keskisisalto
+{
+	border-width: 0.1px;
+	border-color:#D6D6D6;
+	float:left;
+	width: 33%;
+	border-style:inset;
+	border-bottom:hidden;
+
+}
+
+#navlist
+{
+
+	width:100%;
+}
+
+
+#navlist li
+{
+	
+	display: inline;
+	list-style-type: none;
+	padding-right: 3.5%;
+	color: #FFFCE8;
+}
+
+
+
+#citytable td
+{
+
+	margin:20%;
+}
+
+#piclistex td
+{
+
+	text-align: center;
+
+}
+
+#alataulu td
+{
+	
+	padding-right: 3%;
+
+}
+
+#yesterday
+{
+	color:#0073A5;
+}
+
+#logo
+{
+	width:10%;
+	height:10%;
+	padding-top:3px;
+}
+
+#aste
+{
+	color:#F4B701;
+	text-align: center;
+}
+
+#aste span
+{
+	font-size:200%x;
+}
+
+#saaspan
+{
+	color:#F4B701;
+	font-style:italic;
+}
+
+#tuuli
+{
+	background-image:url(astetta.png);
+	padding: 35px;
+	background-position: center top;
+	background-repeat:no-repeat;
+	text-align: center;
+}
+
+#oikeasisalto
+{
+	float:left;
+	width: 33%;
+}
+
+
+
+.valittu
+{
+	border-style:inset;
+	border-top-width: 2px;
+	border-top-color:#8CD6EF;
+	border-bottom:hidden;
+	border-left:hidden;
+	border-right:hidden;
+	padding-right: 5px;
+	padding-left: 5px;
+    display: table-cell;
+   text-align: left;
+   vertical-align: top;
+   background-color:#FFFFFF;
+}
+
+.eivalittu
+{
+	border-style:inset;
+	
+	border-color:#D6D6D6;
+	border-top-width: 2px;
+	border-top-color:#10ADDE;
+	padding-right: 5px;
+	padding-left: 5px;
+   display: table-cell;
+   text-align: left;
+   vertical-align: top;
+   background-color:#F7F7F7;
+}
+
+
+
+#oikeapad
+{
+	text-align:right;
+}
+
+#nousee
+{
+	color:#E79C00;
+}
+
+#laskee
+{
+	color:#CE5200;
+}
+
+.boxer {
+   display: table;
+   border-collapse: collapse;
+   
+   
+   
+	border-color:#D6D6D6;
+	border-style:inset;
+	border-left:hidden;
+	border-right:hidden;
+	margin-bottom: 4px;
+	
+}
+ 
+.boxer .box-row {
+   display: table-row;
+}
+ 
+.boxer .box {
+   display: table-cell;
+   text-align:right;
+   vertical-align: top;
+   width: 60%;
+     background-color:#F7F7F7;
+}
+
+#alalohko
+{
+	width:100%;
+	float:left;
+}
+
+#taulukkolohko
+{
+	
+}
+
+.ylin
+{
+	border-right-style:solid;
+	border-left-style:solid;
+	
+	border-color:#D6D6D6;
+	color:#E3696F;
+}
+
+.alin
+{
+	color:#286EBB;
+}
+
+.paiva
+{
+	border-style:solid;
+	
+	border-color:#D6D6D6;
+}
+
+.ilmatila
+{
+	border-style:solid;
+	
+	border-color:#D6D6D6;
+	border-bottom:hidden;
+	border-top:hidden;
+	border-right:hidden;
+	
+}
+
+.boxer .alabox {
+   display: table-cell;
+   text-align:right;
+   vertical-align: top;
+   width: 60%;
+   background-color:#F7F7F7;
+}
+
+table td
+{
+	margin:0px;
+}
+
+
+#vasensetti
+{
+	float:left;
+	width:50%;
+}
+
+.oikeasetti
+{
+	width: 80%;
+	text-align:right;
+}
+#vasensetti
+{
+	width: 800%;
+}
+
+#nappi
+{
+	background-color:#18A5D6;
+	color:white;
+	border-radius: 5px;
+}

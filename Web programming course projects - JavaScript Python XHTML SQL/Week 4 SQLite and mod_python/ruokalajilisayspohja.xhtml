@@ -1,0 +1,27 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fi" lang="fi">
+<head>
+<title>Reseptit</title>
+</head>
+<body>
+<div id="nav"><p><a href="index.py">Etusivu</a></p><p><a href="lisays.py">Lisää resepti</a></p><p><a href="ruokalajilisays.py">Lisää tai poista ruokalaji</a></p><p><a href="ohjelisays.py">Lisää reseptin vaiheet</a></p><p><a href="reseptimuokkaus.py">Muokkaa reseptiä</a></p><p><a href="ruokaainelisays.py">Lisää ruoka-aine</a></p><p><a href="reseptimuokkaus.py">Muokkaa reseptiä</a></p><p><a href="reseptiainelisays.py">Lisää reseptille aineet</a></p><p><a href="poistareseptista.py">Poista reseptiaine tai vaihe</a></p></div>
+<form action="" method="post">
+<h2>Lisää tai poista ruokalaji</h2>
+<p id="test"></p>
+<p id="nimip"> <label for="Nimi">Nimi</label> <br />
+<input type="text" name="Nimi" id="Nimi" />   </p>
+<p id="kuvausp"> <label for="Kuvaus">Kuvaus</label> <br />
+<input type="text" name="Kuvaus" id="Kuvaus" /> </p>
+
+
+
+<p><input type="submit" name="Lisaa" value="Lisaa" /></p>
+
+<p><select name="Ruokalaji" id="Ruokalaji" size="12"></select></p>
+
+<p><input type="submit" name="Poista" value="Poista" /></p>
+</form>
+
+
+</body>
+</html>

@@ -1,0 +1,110 @@
+--@author Matias Holma, Teemu Salonen
+--@date 10.12.2015
+--@version 1.0.0.
+--Script to calculate relation between MRoom's Facebook pages' likes and traffic in shops.
+
+
+--defining input, output and path--
+txtInOpt = {format: "org.apache.hadoop.mapred.TextInputFormat", 
+                  converter: "com.ibm.jaql.io.hadoop.converter.FromJsonTextConverter"};
+
+txtOutOpt = {format: "org.apache.hadoop.mapred.TextOutputFormat",
+                   converter: "com.ibm.jaql.io.hadoop.converter.ToJsonTextConverter"};
+path1 = "/user/biadmin/sampleData/barbersandlikes/barber.json";
+                   
+
+
+--defining time elements--
+time = dateParts(now());
+minut = time.minute;
+minut2 = if (minut < 10) "0" + serialize(minut) else serialize(minut);
+minut2 = if (minut == 00) "00" else minut2;
+minut2 = if (minut == 10) "10" else minut2;
+minut2 = if (minut == 20) "20" else minut2;
+minut2 = if (minut == 30) "30" else minut2;
+minut2 = if (minut == 40) "40" else minut2;
+minut2 = if (minut == 50) "50" else minut2;
+-- changed to finnish time zone (+2)
+clock =  serialize(time.hour + 2) + "." + minut2;
+date = serialize(time.day) + "." + serialize(time.month) + "." + serialize(time.year);
+time2 = date + " " + clock;
+          
+--getting data from MRoom's site--                   
+results = read(http("https://mroom.asioi.fi/api/pob-info-with-queue"));
+processed = results;
+
+--getting existing samples--
+oldjson = read(hdfs( "/user/biadmin/sampleData/barbersandlikes/barber.json", txtInOpt ));
+
+
+--getting Facebook data from each city--
+linkslist = [{ "link": "https://graph.facebook.com/v2.3/MRoomTampere?fields=likes&access_token=CAAYIfQUkCZB8BAPjG8hUnHmRfjuZCB8VQyXYommc6mi7gdumtZAjeMzj1STMljkZCr5CTgQCUXWEqHKZCBDN7mg4y3kUWlLZBvcAcrSXUwZC9yfDnbWjypdBP8IjKo07QbpWowt7ItBWRC48eL0txkeletFHxv1GaRpRYZCaeweAz6bkx8iUaQKjA8ii0RtD0G8ZD" }, { "link": "https://graph.facebook.com/v2.3/MRoomJyvaskyla?fields=likes&access_token=CAAYIfQUkCZB8BAPjG8hUnHmRfjuZCB8VQyXYommc6mi7gdumtZAjeMzj1STMljkZCr5CTgQCUXWEqHKZCBDN7mg4y3kUWlLZBvcAcrSXUwZC9yfDnbWjypdBP8IjKo07QbpWowt7ItBWRC48eL0txkeletFHxv1GaRpRYZCaeweAz6bkx8iUaQKjA8ii0RtD0G8ZD" }, { "link": "https://graph.facebook.com/v2.3/MRoomRovaniemi?fields=likes&access_token=CAAYIfQUkCZB8BAPjG8hUnHmRfjuZCB8VQyXYommc6mi7gdumtZAjeMzj1STMljkZCr5CTgQCUXWEqHKZCBDN7mg4y3kUWlLZBvcAcrSXUwZC9yfDnbWjypdBP8IjKo07QbpWowt7ItBWRC48eL0txkeletFHxv1GaRpRYZCaeweAz6bkx8iUaQKjA8ii0RtD0G8ZD" }, { "link": "https://graph.facebook.com/v2.3/375782635831443?fields=likes&access_token=CAAYIfQUkCZB8BAPjG8hUnHmRfjuZCB8VQyXYommc6mi7gdumtZAjeMzj1STMljkZCr5CTgQCUXWEqHKZCBDN7mg4y3kUWlLZBvcAcrSXUwZC9yfDnbWjypdBP8IjKo07QbpWowt7ItBWRC48eL0txkeletFHxv1GaRpRYZCaeweAz6bkx8iUaQKjA8ii0RtD0G8ZD" }, { "link": "https://graph.facebook.com/v2.3/MRoomHelsinki?fields=likes&access_token=CAAYIfQUkCZB8BAPjG8hUnHmRfjuZCB8VQyXYommc6mi7gdumtZAjeMzj1STMljkZCr5CTgQCUXWEqHKZCBDN7mg4y3kUWlLZBvcAcrSXUwZC9yfDnbWjypdBP8IjKo07QbpWowt7ItBWRC48eL0txkeletFHxv1GaRpRYZCaeweAz6bkx8iUaQKjA8ii0RtD0G8ZD" }, { "link": "https://graph.facebook.com/v2.3/MRoomEspoo?fields=likes&access_token=CAAYIfQUkCZB8BAPjG8hUnHmRfjuZCB8VQyXYommc6mi7gdumtZAjeMzj1STMljkZCr5CTgQCUXWEqHKZCBDN7mg4y3kUWlLZBvcAcrSXUwZC9yfDnbWjypdBP8IjKo07QbpWowt7ItBWRC48eL0txkeletFHxv1GaRpRYZCaeweAz6bkx8iUaQKjA8ii0RtD0G8ZD" }, { "link": "https://graph.facebook.com/v2.3/357725687627390?fields=likes&access_token=CAAYIfQUkCZB8BAPjG8hUnHmRfjuZCB8VQyXYommc6mi7gdumtZAjeMzj1STMljkZCr5CTgQCUXWEqHKZCBDN7mg4y3kUWlLZBvcAcrSXUwZC9yfDnbWjypdBP8IjKo07QbpWowt7ItBWRC48eL0txkeletFHxv1GaRpRYZCaeweAz6bkx8iUaQKjA8ii0RtD0G8ZD" }, { "link": "https://graph.facebook.com/v2.3/284472408287337?fields=likes&access_token=CAAYIfQUkCZB8BAPjG8hUnHmRfjuZCB8VQyXYommc6mi7gdumtZAjeMzj1STMljkZCr5CTgQCUXWEqHKZCBDN7mg4y3kUWlLZBvcAcrSXUwZC9yfDnbWjypdBP8IjKo07QbpWowt7ItBWRC48eL0txkeletFHxv1GaRpRYZCaeweAz6bkx8iUaQKjA8ii0RtD0G8ZD" }, { "link": "https://graph.facebook.com/v2.3/MRoomOulu?fields=likes&access_token=CAAYIfQUkCZB8BAPjG8hUnHmRfjuZCB8VQyXYommc6mi7gdumtZAjeMzj1STMljkZCr5CTgQCUXWEqHKZCBDN7mg4y3kUWlLZBvcAcrSXUwZC9yfDnbWjypdBP8IjKo07QbpWowt7ItBWRC48eL0txkeletFHxv1GaRpRYZCaeweAz6bkx8iUaQKjA8ii0RtD0G8ZD" }, { "link": "https://graph.facebook.com/v2.3/MRoomTurku?fields=likes&access_token=CAAYIfQUkCZB8BAPjG8hUnHmRfjuZCB8VQyXYommc6mi7gdumtZAjeMzj1STMljkZCr5CTgQCUXWEqHKZCBDN7mg4y3kUWlLZBvcAcrSXUwZC9yfDnbWjypdBP8IjKo07QbpWowt7ItBWRC48eL0txkeletFHxv1GaRpRYZCaeweAz6bkx8iUaQKjA8ii0RtD0G8ZD" }];
+links = linkslist ->transform $.link;
+tampere = read(http(linkslist[0].link)).likes;
+jyvaskyla = read(http(linkslist[1].link)).likes;
+rovaniemi = read(http(linkslist[2].link)).likes;
+lahti = read(http(linkslist[3].link)).likes;
+helsinki = read(http(linkslist[4].link)).likes;
+espoo = read(http(linkslist[5].link)).likes;
+pori = read(http(linkslist[6].link)).likes;
+hameenlinna = read(http(linkslist[7].link)).likes;
+oulu = read(http(linkslist[8].link)).likes;
+turku = read(http(linkslist[9].link)).likes;
+likesjson = [{"city":"Tampere","likes":tampere[0]},{city:"Jyväskylä","likes":jyvaskyla[0]},{city:"Rovaniemi","likes":rovaniemi[0]},{city:"Lahti","likes":lahti[0]},{city:"Helsinki","likes":helsinki[0]},{city:"Espoo","likes":espoo[0]},{city:"Pori","likes":pori[0]},{city:"Hämeenlinna","likes":hameenlinna[0]}, {city:"Oulu","likes":oulu[0]}, {city:"Turku","likes":turku[0]}];
+
+--parsing MRoom data--
+barberjson = processed[0]
+      -> transform {
+      queue: if ($.queue.count == "closed" or $.queue.count == "full" or $.queue.employees == 0) 0 else $.queue.count,
+      employees: $.queue.employees,
+      city: $.city
+      };
+barberjson =  barberjson -> group by city = $.city 
+                   into {city, queue: sum($[*].queue), shops: count($[*].city), employees: sum($[*].employees), traffic:  (sum($[*].queue) + sum($[*].employees)),  date: date, clock: clock};
+
+--connecting MRoom data and Facebook data--
+barberjson = join barberjson, likesjson
+  where barberjson.city == likesjson.city
+  into {barberjson.city, barberjson.queue, barberjson.shops, barberjson.traffic, barberjson.employees, barberjson.date, barberjson.clock , likesjson.likes};
+
+
+--updating sample elements--
+sss = oldjson[0].samples + 1;
+sss = if (sss==null) 0 else sss;
+
+--calculating relations--
+barberjson = barberjson
+      -> transform {
+      city: $.city,
+      employees: $.employees,
+      traffic: $.traffic,
+      queue: $.queue,
+      date: $.date,
+      clock: $.clock,
+      likes: $.likes,
+      shops: $.shops,
+      relation: if ($.traffic>0) ($.likes/$.traffic) else $.likes/1,
+      samples: sss
+      };
+
+--connecting existing samples with new one--
+barberjson = union(oldjson, barberjson);
+barberjson =  barberjson -> group by city = $.city 
+                   into {city, shops: $.shops, queue: sum($[*].queue), employees: sum($[*].employees), traffic:  (sum($[*].queue) + sum($[*].employees)), likes: $.likes,  relation: $.relation,  date: date, clock: clock, samples: sss};
+
+barberjson = barberjson
+      -> transform {
+      city: $.city,
+      employees: $.employees,
+      traffic: $.traffic,
+      queue: $.queue,
+      date: $.date,
+      clock: $.clock,
+      likes: $.likes[0],
+      shops: $.shops[0],
+      samples: $.samples
+      };
+      
+      
+--writing files to server--
+barberjson -> write(hdfs(path1, txtOutOpt ));

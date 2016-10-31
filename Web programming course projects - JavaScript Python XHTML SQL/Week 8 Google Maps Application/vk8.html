@@ -1,0 +1,38 @@
+
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Sääennuste</title>
+    <meta name="viewport" content="initial-scale=1.0">
+    <meta charset="utf-8">
+    <script type="text/javascript" src="js/jquery-2.1.0.min.js"></script>
+    <link href="style.css" rel="StyleSheet" type="text/css" />
+    
+   <script type="text/javascript" src="js/map.js"> </script>
+   <script src="https://maps.googleapis.com/maps/api/js?signed_in=true&amp;callback=initMap"
+        async defer></script>
+   
+  </head>
+  <body id="body">
+  <div id="ennuste">
+  <table id="table">
+  <tr><th>Kaupunki</th>
+  <th>Lämpötila, <strong>°C</strong></th>
+  <th>Ilmanpaine,  hPa</th>
+  <th>Kosteus, %</th>
+  <th>Tuulennopeus, m/s</th>
+  <th>Tuulen suunta, <strong>°</strong></th><th>Viimeksi päivitetty</th></tr>
+  <tr><td id="kaupunki"></td>
+  <td id="lampotila">-</td> <td id="ilmanpaine">-</td> <td id="kosteus">-</td>
+  <td id="tuulennopeus">-</td>
+  <td id="tuulensuunta">-</td>
+  <td id="viimeksipaivitettu">-</td></tr> </table>
+
+  </div>
+
+    <div id="map"></div>
+    
+
+  </body>
+</html>

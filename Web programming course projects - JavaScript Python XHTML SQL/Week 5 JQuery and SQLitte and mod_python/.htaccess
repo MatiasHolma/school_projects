@@ -1,0 +1,14 @@
+
+AddHandler mod_python .py
+
+#seuraavien rivien järjestys on olennainen:
+
+PythonHandler mod_python.publisher
+
+PythonDebug On
+
+PythonInterpPerDirective On
+PythonAutoReload On
+
+
+
